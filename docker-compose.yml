@@ -3,8 +3,23 @@ version: '3.8'
 services:
 
   backend:
+    env_file:
+      - .env
     build:
       context: ../backend
       args:
         user: www
         uid: 80
+    restart: unless-stopped
+    depends_on:
+      - pgsql
+
+  pgsql:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
