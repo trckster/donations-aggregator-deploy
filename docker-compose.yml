@@ -1,18 +1,28 @@
 version: '3.8'
 
+x-php-config:
+  &php-config
+  env_file:
+    - .env
+  build:
+    context: ../backend
+    args:
+      user: www
+      uid: 80
+  restart: unless-stopped
+
 services:
 
   backend:
-    env_file:
-      - .env
-    build:
-      context: ../backend
-      args:
-        user: www
-        uid: 80
-    restart: unless-stopped
+    <<: *php-config
     depends_on:
       - pgsql
+
+  scheduler:
+    <<: *php-config
+    command: bash -c "while true; do php artisan donations:load-from-donate-pay; sleep 16; done"
+    depends_on:
+      - backend
 
   pgsql:
     image: postgres
