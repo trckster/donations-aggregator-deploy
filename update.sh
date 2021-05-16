@@ -5,7 +5,6 @@ update_backend() {
 
 	cd /var/www/backend
 	git pull
-	cd /var/www/deploy
 	docker-compose up -d --no-deps --build backend scheduler
 	docker-compose exec backend php artisan migrate --force
 }
@@ -20,6 +19,9 @@ updated_all() {
 	update_backend
 	update_frontend
 }
+
+cd /var/www/deploy
+git pull
 
 if [[ $1 = "backend" ]]; then
 	update_backend
