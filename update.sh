@@ -5,13 +5,20 @@ update_backend() {
 
 	cd /var/www/backend
 	git pull
+
+	cd /var/www/deploy
 	docker-compose up -d --no-deps --build backend scheduler
 	docker-compose exec backend php artisan migrate --force
 }
 
 update_frontend() {
 	echo "Updating frontend"
-	echo "No scripts for frontend yet."
+
+	cd /var/www/frontend
+	git pull
+
+	cd /var/www/deploy
+	docker-compose up -d --no-deps --build frontend
 }
 
 updated_all() {
