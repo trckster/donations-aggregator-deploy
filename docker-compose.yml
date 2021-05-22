@@ -18,6 +18,11 @@ services:
     depends_on:
       - pgsql
 
+  frontend:
+    build:
+      context: ../frontend
+    restart: unless-stopped
+
   scheduler:
     <<: *php-config
     command: bash -c "while true; do php artisan donations:load-from-donate-pay; sleep 16; done"
