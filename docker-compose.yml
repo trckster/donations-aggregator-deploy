@@ -21,6 +21,9 @@ services:
   frontend:
     build:
       context: ../frontend
+    environment:
+      API_URL_BROWSER: ${API_URL}
+
     restart: unless-stopped
 
   scheduler:
