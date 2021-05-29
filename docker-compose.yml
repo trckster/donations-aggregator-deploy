@@ -21,8 +21,8 @@ services:
   frontend:
     build:
       context: ../frontend
-    environment:
-      API_URL_BROWSER: ${API_URL}
+    env_file:
+      - .env
 
     restart: unless-stopped
 
