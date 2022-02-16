@@ -3,10 +3,10 @@
 update_backend() {
 	echo "Updating backend"
 
-	cd /var/www/backend
+	cd ../backend
 	git pull
 
-	cd /var/www/deploy
+	cd ../deploy
 	docker-compose up -d --no-deps --build backend scheduler
 	docker-compose exec backend php artisan migrate --force
 }
@@ -14,10 +14,10 @@ update_backend() {
 update_frontend() {
 	echo "Updating frontend"
 
-	cd /var/www/frontend
+	cd ../frontend
 	git pull
 
-	cd /var/www/deploy
+	cd ../deploy
 	docker-compose up -d --no-deps --build frontend
 }
 
@@ -27,7 +27,6 @@ updated_all() {
 	update_frontend
 }
 
-cd /var/www/deploy
 git pull
 
 if [[ $1 = "backend" ]]; then
